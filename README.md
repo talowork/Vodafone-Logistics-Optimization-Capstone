@@ -17,6 +17,13 @@
 | Approaches | Exact mixed-integer optimization (Gurobi), Greedy, Greedy + Tabu Search, Greedy + Swap |
 | Stack | Python, Gurobi/GurobiPy, pandas, NumPy, geographic distance calculations, K-Means clustering |
 
+## Explore the two project phases
+
+- **[Senior Design I — single-echelon p-center model](senior-design-1/README.md)**: mathematical formulation, geographic-distance preparation and depot-count sensitivity analysis.
+- **[Senior Design II — multi-echelon optimization](senior-design-2/README.md)**: hierarchical model, three heuristics, all eight scenarios, and runtime benchmarks.
+
+![Single- and multi-echelon architecture](assets/network-architecture.svg)
+
 ## The business problem
 
 Telecommunications infrastructure relies on reliable distribution of maintenance equipment and spare parts. A network with widely dispersed base stations faces a difficult trade-off: concentrating inventory in fewer facilities may simplify operations, but creates long service routes for remote stations. Our capstone studied **where facilities should be located and which sites they should serve** to improve geographic accessibility and worst-case coverage.
@@ -73,6 +80,8 @@ We implemented a **mixed-integer linear programming (MILP)** formulation in Pyth
 
 The model converted great-circle distances into approximate travel-time inputs using assumed average speeds of **30 km/h** (regional depot to station) and **90 km/h** (main depot to regional depot). These are **simplifying assumptions**, not measured road-route times.
 
+![IE 401 modeled distance comparison](assets/ie401-distance.png)
+
 ## Results — quality versus computation time
 
 The IE 402 study compared eight depot configurations. The table below gives three representative examples from the reported experimental results; **lower maximum service time is better**.
@@ -86,6 +95,10 @@ The IE 402 study compared eight depot configurations. The table below gives thre
 **Main finding:** Greedy + Tabu Search consistently improved on the simple Greedy baseline and produced modeled service times close to the exact benchmark in the reported scenarios. Across the eight scenarios, its gap to the benchmark was approximately **1–6%**, calculated from the reported objective values. Reported runtime was approximately **80–203 seconds** for Greedy + Tabu versus **415–1,087 seconds** for the exact method (Greedy alone: roughly **0.01–0.04 seconds**). The methods trade off solution quality and compute time; none is universally fastest *and* best.
 
 > **Interpretation note:** The IE 401 distance results and IE 402 service-time results use different objectives, samples and network formulations; their headline values should not be compared as a before/after operational performance measure.
+
+![IE 402 service-time comparison](assets/ie402-service-time.png)
+
+![IE 402 runtime comparison](assets/ie402-runtime.png)
 
 ## Modeling decisions and constraints
 
